@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SmartHome.Data.Repositories
+﻿namespace SmartHome.Data.Repositories
 {
     public interface IRoomRepositury
     {
-        public async Task<List<>>
+        public Task<List<Room>> GetRooms();
+        public Task<Room> GetRoom(int id);
+        public Task AddRoom(Room room);
+        public Task UpdateRoom(Room room);
+        public Task AddDeviceToRoom(int id, IDevice device);
+        public Task RemoveRoom(int id);
     }
 }

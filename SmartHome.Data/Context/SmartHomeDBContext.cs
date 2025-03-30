@@ -7,13 +7,10 @@ using Microsoft.Data.SqlClient;
 
 namespace SmartHome.Data.Context
 {
-    public class SmartHomeDBContext
+    public class SmartHomeDBContext(string connectionString)
     {
-        private readonly string _connectionString;
-        public SmartHomeDBContext(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
+        private readonly string _connectionString = connectionString;
+
         public SqlConnection CreateConnection()
         {
             return new SqlConnection(_connectionString);

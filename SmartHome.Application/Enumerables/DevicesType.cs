@@ -2,7 +2,7 @@
 {
     public enum DevicesType
     {
-        TV,
+        TV = 1,
         Conditioner,
         Spots, // для каждого спота писать бредово
         Chandelier
