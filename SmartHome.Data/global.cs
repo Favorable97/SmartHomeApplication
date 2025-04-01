@@ -1,3 +1,3 @@
-﻿global using SmartHome.Application.Models;
-global using SmartHome.Application.Interfaces;
-global using SmartHome.Application;
+﻿global using SmartHome.Data.Enumerables;
+global using SmartHome.Data.Interfaces;
+global using SmartHome.Data.Models;

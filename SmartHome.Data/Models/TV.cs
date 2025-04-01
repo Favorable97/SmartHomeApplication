@@ -1,4 +1,4 @@
-﻿namespace SmartHome.Application.Models
+﻿namespace SmartHome.Data.Models
 {
     public record TV : IDevice
     {

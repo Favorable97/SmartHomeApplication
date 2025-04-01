@@ -1,4 +1,4 @@
-﻿namespace SmartHome.Application.Enumerables
+﻿namespace SmartHome.Data.Enumerables
 {
     public enum DevicesType
     {

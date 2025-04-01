@@ -1,5 +1,5 @@
 ﻿
-namespace SmartHome.Application.Models
+namespace SmartHome.Data.Models
 {
     public record Spots : IDevice
     {

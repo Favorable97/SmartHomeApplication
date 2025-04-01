@@ -1,4 +1,4 @@
-﻿namespace SmartHome.Application.Interfaces
+﻿namespace SmartHome.Data.Interfaces
 {
     public interface IDevice
     {
