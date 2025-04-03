@@ -1,6 +1,8 @@
-﻿namespace SmartHome.Data.Repositories
+﻿using SmartHome.Data.Models;
+using SmartHome.Data.Interfaces;
+namespace SmartHome.Application.Services
 {
-    public interface IRoomRepositury
+    public interface IRoomServices
     {
         public Task<List<Room>> GetRooms();
         public Task<Room> GetRoom(int id);
