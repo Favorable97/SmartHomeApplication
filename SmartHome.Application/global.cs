@@ -1,2 +1,2 @@
 ﻿global using SmartHome.Data.Models;
-global using SmartHome.Data.Repositories;
+global using SmartHome.Application.Services;

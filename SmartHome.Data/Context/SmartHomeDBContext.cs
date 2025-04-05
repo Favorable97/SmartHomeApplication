@@ -6,7 +6,6 @@ namespace SmartHome.Data.Context
     public class SmartHomeDBContext(string connectionString)
     {
         private readonly string _connectionString = connectionString;
-
         private SqlConnection CreateConnection()
         {
             return new SqlConnection(_connectionString);
