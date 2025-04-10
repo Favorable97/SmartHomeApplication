@@ -1,7 +1,8 @@
 using SmartHome.Application;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddStartServices(builder.Configuration.GetConnectionString("mssql")!);
+builder.Services.AddStartServices();
+builder.Services.AddSqlService(builder.Configuration.GetConnectionString("mssql")!);
 var app = builder.Build();
 
 
