@@ -18,7 +18,7 @@ namespace SmartHome.Data.Repositories
             List<Room> result = [];
             foreach (DataRow row in resultTable.Rows)
             {
-                result.Add(new Room() { ID = (Guid)row["ID"], Name = row["Name"].ToString()!, Temperature = (double)row["Temperature"] });
+                result.Add(MappingObjectToRoom((Guid)row["ID"], row["Name"].ToString()!, null, (double)row["Temperature"]));
             }
             return result;
         }
@@ -26,10 +26,10 @@ namespace SmartHome.Data.Repositories
         {
             string query = "SELECT *  FROM Room WHERE ID = @ID";
             List<SqlParam> sqlParams = [new SqlParam("@ID", roomId)];
-            DataTable resultTable =  await _context.ExecuteReader(query, sqlParams);
+            DataTable resultTable = await _context.ExecuteReader(query, sqlParams);
             if (resultTable.Rows.Count == 0)
                 return null;
-            Room room = new() { ID = (Guid)resultTable.Rows[0]["ID"], Name = resultTable.Rows[0]["Name"].ToString()!, Temperature = (double)resultTable.Rows[0]["Temperature"] };
+            Room room = MappingObjectToRoom((Guid)resultTable.Rows[0]["ID"], resultTable.Rows[0]["Name"].ToString()!, null, (double)resultTable.Rows[0]["Temperature"]);
             return room;
         }
         public async Task AddRoom(Room room)
@@ -59,10 +59,14 @@ namespace SmartHome.Data.Repositories
         }
         public async Task RemoveRoom(Guid roomId)
         {
-            string query = "DELETE Room WHERE ID = @ID";
+            string query = "DELETE FROM Room WHERE ID = @ID";
             List<SqlParam> sqlParams = new();
             sqlParams.Add(new("@ID", roomId));
             await _context.ExecuteAsync(query, sqlParams);
+        }
+        private Room MappingObjectToRoom(Guid id, string name, List<IDevice>? devices, double temperature)
+        {
+            return new Room { ID = id, Name = name, Devices = devices, Temperature = temperature };
         }
     }
 }
