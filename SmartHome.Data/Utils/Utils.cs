@@ -11,7 +11,7 @@ namespace SmartHome.Data.Utils
     {
         public static List<Room> GetRoomList(DataTable roomsTable)
         {
-            List<Room> roomList = new();
+            List<Room> roomList = [];
 
             foreach (DataRow row in roomsTable.Rows)
             {

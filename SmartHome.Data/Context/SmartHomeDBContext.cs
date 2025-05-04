@@ -6,37 +6,37 @@ namespace SmartHome.Data.Context
     public class SmartHomeDBContext(SqlConnection connection)
     {
         private readonly SqlConnection _connection = connection;
-        public async Task<int> ExecuteAsync(string query, List<SqlParam>? parameters = null)
+        public async Task<int> ExecuteAsync(string query, params SqlParameter[] parameters)
         {
             await _connection.OpenAsync();
             using SqlCommand command = new(query, connection);
             if (parameters != null)
             {
-                foreach (SqlParam param in parameters)
-                    command.Parameters.AddWithValue(param.Name, param.Value);
+                foreach (SqlParameter param in parameters)
+                    command.Parameters.AddWithValue(param.ParameterName, param.Value);
             }
             return await command.ExecuteNonQueryAsync();
         }
-        public async Task<object?> ExecuteScalarAsync(string query, List<SqlParam> parameters = null)
+        public async Task<object?> ExecuteScalarAsync(string query, params SqlParameter[] parameters)
         {
             await _connection.OpenAsync();
             using SqlCommand command = new(query, connection);
             if (parameters != null)
             {
-                foreach (SqlParam param in parameters)
-                    command.Parameters.AddWithValue(param.Name, param.Value);
+                foreach (SqlParameter param in parameters)
+                    command.Parameters.AddWithValue(param.ParameterName, param.Value);
             }
                 
             return await command.ExecuteScalarAsync();
         }
-        public async Task<DataTable> ExecuteReader(string query, List<SqlParam> parameters = null)
+        public async Task<DataTable> ExecuteReader(string query, params SqlParameter[] parameters)
         {
             await _connection.OpenAsync();
             using SqlDataAdapter adapter = new(query, connection);
-            if (parameters != null)
+            if (parameters.Length > 0)
             {
-                foreach (SqlParam param in parameters)
-                    adapter.SelectCommand.Parameters.AddWithValue(param.Name, param.Value);
+                foreach (SqlParameter param in parameters)
+                    adapter.SelectCommand.Parameters.AddWithValue(param.ParameterName, param.Value);
             } 
                 
             DataTable result = new();
