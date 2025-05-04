@@ -26,9 +26,9 @@ namespace SmartHome.Application.Services
         {
             throw new NotImplementedException();
         }
-        public async Task UpdateRoom(Room room)
+        public async Task<bool> UpdateRoom(Room room)
         {
-            await _repository.UpdateRoom(room);
+            return await _repository.UpdateRoom(room);
         }
         public async Task RemoveRoom(Guid roomId)
         {

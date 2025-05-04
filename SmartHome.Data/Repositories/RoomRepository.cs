@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using SmartHome.Data.Context;
 using SmartHome.Data.Utils;
 
@@ -22,8 +23,12 @@ namespace SmartHome.Data.Repositories
         public async Task<Room?> GetRoom(Guid roomId)
         {
             string query = "SELECT * FROM vw_Rooms WHERE RoomID = @ID";
-            List<SqlParam> sqlParams = [new SqlParam("@ID", roomId)];
-            DataTable resultTable = await _context.ExecuteReader(query, sqlParams);
+            SqlParameter _id = new()
+            {
+                ParameterName = "@ID",
+                Value = roomId
+            };
+            DataTable resultTable = await _context.ExecuteReader(query, _id);
             if (resultTable.Rows.Count == 0)
                 return null;
             Room? room = Utils.Utils.GetRoomList(resultTable).FirstOrDefault();
@@ -32,19 +37,26 @@ namespace SmartHome.Data.Repositories
         public async Task AddRoom(Room room)
         {
             string query = "INSERT INTO Room VALUES(@ID, @Name, @Temperature)";
-            List<SqlParam> sqlParams = new();
-            sqlParams.Add(new("@ID", room.ID));
-            sqlParams.Add(new("@Name", room.Name));
-            sqlParams.Add(new("@Temperature", room.Temperature));
-            await _context.ExecuteAsync(query, sqlParams);
+            SqlParameter[] parameters =
+            [
+                new("@ID", room.ID),
+                new("@Name", room.Name),
+                new("@Temperature", room.Temperature)
+            ];
+            await _context.ExecuteAsync(query, parameters);
         }
-        public async Task UpdateRoom(Room room)
+        public async Task<bool> UpdateRoom(Room room)
         {
+            Room? _room = await GetRoom(room.ID);
+            if (_room is null) return false;
             string query = "UPDATE Room SET Name = @Name WHERE ID = @ID";
-            List<SqlParam> sqlParams = new();
-            sqlParams.Add(new("@ID", room.ID));
-            sqlParams.Add(new("@Name", room.Name));
-            await _context.ExecuteAsync(query, sqlParams);
+            SqlParameter[] parameters =
+            [
+                new("@ID", room.ID),
+                new("@Name", room.Name)
+            ];
+            int updateRow = await _context.ExecuteAsync(query, parameters);
+            return updateRow > 0;
         }
         public Task AddDeviceToRoom(Guid roomId, IDevice device)
         {
@@ -57,9 +69,12 @@ namespace SmartHome.Data.Repositories
         public async Task RemoveRoom(Guid roomId)
         {
             string query = "DELETE FROM Room WHERE ID = @ID";
-            List<SqlParam> sqlParams = new();
-            sqlParams.Add(new("@ID", roomId));
-            await _context.ExecuteAsync(query, sqlParams);
+            SqlParameter _id = new()
+            {
+                ParameterName = "@ID",
+                Value = roomId
+            };
+            await _context.ExecuteAsync(query, _id);
         }
     }
 }
