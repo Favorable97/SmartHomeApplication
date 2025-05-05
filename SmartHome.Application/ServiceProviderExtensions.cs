@@ -10,7 +10,8 @@ namespace SmartHome.Application
         {
             //services.AddSingleton<SmartHomeDBContext>(new SmartHomeDBContext(connectionString));
             services.AddScoped<IRoomServices, RoomServices>();
-            services.AddScoped<IRoomRepositury, RoomRepository>();
+            //services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddSingleton<IRoomRepository, RoomRepositoryTestWithoutDB>();
         }
         public static void AddSqlService(this IServiceCollection services, string connectionString)
         {

@@ -10,7 +10,7 @@ using SmartHome.Data.Utils;
 
 namespace SmartHome.Data.Repositories
 {
-    public class RoomRepository(SmartHomeDBContext context) : IRoomRepositury
+    public class RoomRepository(SmartHomeDBContext context) : IRoomRepository
     {
         private readonly SmartHomeDBContext _context = context;
         public async Task<List<Room>> GetRooms()

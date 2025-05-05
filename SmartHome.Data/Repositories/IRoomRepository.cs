@@ -1,6 +1,6 @@
 ﻿namespace SmartHome.Data.Repositories
 {
-    public interface IRoomRepositury
+    public interface IRoomRepository
     {
         public Task<List<Room>> GetRooms();
         public Task<Room> GetRoom(Guid id);

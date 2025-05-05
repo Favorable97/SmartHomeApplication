@@ -3,9 +3,9 @@ using SmartHome.Data.Repositories;
 
 namespace SmartHome.Application.Services
 {
-    public class RoomServices(IRoomRepositury repository) : IRoomServices
+    public class RoomServices(IRoomRepository repository) : IRoomServices
     {
-        private IRoomRepositury _repository = repository;
+        private IRoomRepository _repository = repository;
         public async Task<List<Room>> GetRooms()
         {
             return await _repository.GetRooms();
