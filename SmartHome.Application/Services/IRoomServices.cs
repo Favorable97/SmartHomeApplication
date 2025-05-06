@@ -4,9 +4,9 @@ namespace SmartHome.Application.Services
 {
     public interface IRoomServices
     {
-        public Task<List<Room>> GetRooms();
-        public Task<Room> GetRoom(Guid roomId);
-        public Task AddRoom(Room room);
+        public Task<ApiResponse<List<Room>>> GetRooms();
+        public Task<ApiResponse<Room>> GetRoom(Guid roomId);
+        public Task<bool> AddRoom(Room room);
         public Task<bool> UpdateRoom(Room room);
         public Task AddDeviceToRoom(Guid roomId, IDevice device);
         public Task RemoveDeviceFromRoomById(Room room, int deviceId);

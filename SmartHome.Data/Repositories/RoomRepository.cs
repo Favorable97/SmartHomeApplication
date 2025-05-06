@@ -47,8 +47,6 @@ namespace SmartHome.Data.Repositories
         }
         public async Task<bool> UpdateRoom(Room room)
         {
-            Room? _room = await GetRoom(room.ID);
-            if (_room is null) return false;
             string query = "UPDATE Room SET Name = @Name WHERE ID = @ID";
             SqlParameter[] parameters =
             [

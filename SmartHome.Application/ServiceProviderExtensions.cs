@@ -10,8 +10,15 @@ namespace SmartHome.Application
         {
             //services.AddSingleton<SmartHomeDBContext>(new SmartHomeDBContext(connectionString));
             services.AddScoped<IRoomServices, RoomServices>();
-            //services.AddScoped<IRoomRepository, RoomRepository>();
-            services.AddSingleton<IRoomRepository, RoomRepositoryTestWithoutDB>();
+            // В случае, если сервис запущен не на моей машине, то разработка ведется через List
+            if (Environment.MachineName.Equals("DESKTOP-F6VA77D"))
+            {
+                services.AddScoped<IRoomRepository, RoomRepository>();
+            }
+            else
+            {
+                services.AddSingleton<IRoomRepository, RoomRepositoryTestWithoutDB>();
+            }
         }
         public static void AddSqlService(this IServiceCollection services, string connectionString)
         {

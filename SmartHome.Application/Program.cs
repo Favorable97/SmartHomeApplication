@@ -9,15 +9,22 @@ var app = builder.Build();
 app.ErrorHandlerMiddleware();
 
 app.MapGet("/api/room", async (IRoomServices service) => Results.Json(await service.GetRooms()));
-app.MapGet("/api/room/{roomId}", async (Guid roomId, IRoomServices services) => 
-    await services.GetRoom(roomId) is Room room
-    ? Results.Json(room)
-    : Results.NotFound()
-);
+//app.MapGet("/api/room/{roomId}", async (Guid roomId, IRoomServices services) => 
+//    (await services.GetRoom(roomId)).Data is Room room
+//    ? Results.Ok(room)
+//    : Results.NotFound()
+//);
+app.MapGet("/api/room/{roomId}", async (Guid roomId, IRoomServices services) =>
+{
+    var result = await services.GetRoom(roomId);
+    return result.Data is not null ? Results.Ok(result) : Results.NotFound(result);
+});
 app.MapPost("/api/room", async (IRoomServices service, Room room) =>
 {
-    await service.AddRoom(room);
-    return Results.Created($"/api/room/{room.ID}", room);
+    bool success = await service.AddRoom(room);
+    return success ? 
+        Results.Created($"/api/room/{room.ID}", room) 
+        : Results.BadRequest("Комната с подобным идентификатором уже была создана! Попробуйте обновить страницу");
 });
 app.MapPut("/api/room", async (IRoomServices service, Room room) =>
 {
