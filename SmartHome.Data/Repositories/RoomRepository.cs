@@ -17,7 +17,7 @@ namespace SmartHome.Data.Repositories
         {
             string query = "SELECT * FROM vw_Rooms";
             DataTable resultTable = await _context.ExecuteReader(query);
-            List<Room> result = Utils.Utils.GetRoomList(resultTable);
+            List<Room> result = Utils.DeviceFactory.GetRoomList(resultTable);
             return result;
         }
         public async Task<Room?> GetRoom(Guid roomId)
@@ -31,7 +31,7 @@ namespace SmartHome.Data.Repositories
             DataTable resultTable = await _context.ExecuteReader(query, _id);
             if (resultTable.Rows.Count == 0)
                 return null;
-            Room? room = Utils.Utils.GetRoomList(resultTable).FirstOrDefault();
+            Room? room = Utils.DeviceFactory.GetRoomList(resultTable).FirstOrDefault();
             return room;
         }
         public async Task AddRoom(Room room)
