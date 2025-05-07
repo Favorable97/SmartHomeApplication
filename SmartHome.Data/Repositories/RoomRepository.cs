@@ -45,18 +45,15 @@ namespace SmartHome.Data.Repositories
             ];
             await _context.ExecuteAsync(query, parameters);
         }
-        public async Task<bool> UpdateRoom(Room room)
+        public async Task UpdateRoom(Room room)
         {
-            Room? _room = await GetRoom(room.ID);
-            if (_room is null) return false;
             string query = "UPDATE Room SET Name = @Name WHERE ID = @ID";
             SqlParameter[] parameters =
             [
                 new("@ID", room.ID),
                 new("@Name", room.Name)
             ];
-            int updateRow = await _context.ExecuteAsync(query, parameters);
-            return updateRow > 0;
+            await _context.ExecuteAsync(query, parameters);
         }
         public Task AddDeviceToRoom(Guid roomId, IDevice device)
         {
