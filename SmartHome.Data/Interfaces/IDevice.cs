@@ -2,8 +2,11 @@
 {
     public interface IDevice
     {
-        public Guid ID { get; init; }
-        public string Name { get; init; }
-        public DevicesType Type { get; init; }
+        Guid ID { get; init; }
+        string Name { get; init; }
+        DevicesType Type { get; init; }
+        string GetStatus();
+        void TurnOn();
+        void TurnOff();
     }
 }
