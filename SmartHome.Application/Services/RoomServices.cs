@@ -20,26 +20,29 @@ namespace SmartHome.Application.Services
                     ? ApiResponse<Room>.Error("Комната была удалена!")
                     : ApiResponse<Room>.Ok(room);
         }
-        public async Task<ApiResponse<object>> AddRoom(Room userData)
+        public async Task<ApiResponse<Room>> AddRoom(Room userData)
         {
             Room? room = await _repository.GetRoom(userData.ID);
             if (room is not null)
-                return ApiResponse<object>.Error("Комната с таким идентификатором уже существует!");
+                return ApiResponse<Room>.Error("Комната с таким идентификатором уже существует!");
             await _repository.AddRoom(userData);
-            return true;
+            return ApiResponse<Room>.Ok(userData, "Комната успешно добавлена!");
         }
-        public async Task<bool> UpdateRoom(Room userData)
+        public async Task<ApiResponse<Room>> UpdateRoom(Room userData)
         {
             Room? room = await _repository.GetRoom(userData.ID);
             if (room is null)
-                return false;
-            return await _repository.UpdateRoom(room);
+                return ApiResponse<Room>.Error($"Комнаты с ID = {userData.ID} не существует!");
+            await _repository.UpdateRoom(userData);
+            return ApiResponse<Room>.Ok(userData, $"Комната с ID = {userData.ID} успешно обновлена");
         }
-        public async Task RemoveRoom(Guid roomId)
+        public async Task<ApiResponse<object>> RemoveRoom(Guid roomId)
         {
             Room? room = await _repository.GetRoom(roomId);
-            if (room is not null)
-                await _repository.RemoveRoom(roomId);
+            if (room is null)
+                return ApiResponse<object>.Error($"Комнаты с ID = {roomId} не существует!");
+            await _repository.RemoveRoom(roomId);
+            return ApiResponse<object>.Ok(null, "Комната удалена!");
         }
         public Task AddDeviceToRoom(Guid roomId, IDevice device)
         {
