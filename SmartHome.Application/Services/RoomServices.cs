@@ -44,7 +44,7 @@ namespace SmartHome.Application.Services
             await _repository.RemoveRoom(roomId);
             return ApiResponse<object>.Ok(null, "Комната удалена!");
         }
-        public Task AddDeviceToRoom(AddDeviceToRoomDTO userData)
+        public Task AddDeviceToRoom(Guid roomId, IDevice device)
         {
             throw new NotImplementedException();
         }

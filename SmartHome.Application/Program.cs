@@ -1,4 +1,6 @@
+using SmartHome.Application;
 using SmartHome.Application.Middleware;
+using SmartHome.Data.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddStartServices();
@@ -29,10 +31,9 @@ app.MapDelete("/api/room/{roomId}", async (IRoomServices service, Guid roomId) =
     await service.RemoveRoom(roomId);
     return Results.NoContent();
 });
-app.MapPost("/api/device", async (IRoomServices service, AddDeviceToRoomDTO userData) =>
+app.MapPost("/api/device", async (IRoomServices service, Guid roomId, IDevice device) =>
 {
-    
-    await service.AddDeviceToRoom(userData);
+    await service.AddDeviceToRoom(roomId, device);
     return Results.Created();
 });
 app.Run();
