@@ -1,5 +1,4 @@
-﻿using SmartHome.Application.Services;
-using SmartHome.Data.Context;
+﻿using SmartHome.Data.Context;
 using SmartHome.Data.Repositories;
 using Microsoft.Data.SqlClient;
 namespace SmartHome.Application

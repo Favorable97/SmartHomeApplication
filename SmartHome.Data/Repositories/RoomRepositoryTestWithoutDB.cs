@@ -38,22 +38,11 @@ namespace SmartHome.Data.Repositories
             _rooms.Add(room);
             return Task.CompletedTask;
         }
-        public async Task<bool> UpdateRoom(Room room)
+        public async Task UpdateRoom(Room room)
         {
-            try
-            {
-                Room? updateRoom = await GetRoom(room.ID);
-                if (updateRoom is not null)
-                {
-                    updateRoom.Name = room.Name;
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            Room? updateRoom = await GetRoom(room.ID);
+            if (updateRoom is not null)
+                updateRoom.Name = room.Name;
         }
         public async Task RemoveRoom(Guid roomId)
         {
