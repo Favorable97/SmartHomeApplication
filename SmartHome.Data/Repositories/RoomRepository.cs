@@ -6,19 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using SmartHome.Data.Context;
-using SmartHome.Data.Utils;
 
 namespace SmartHome.Data.Repositories
 {
-    public class RoomRepository(SmartHomeDBContext context) : IRoomRepository
+    public class RoomRepository(SmartHomeDBContext context, IDeviceFactory deviceFactory) : IRoomRepository
     {
         private readonly SmartHomeDBContext _context = context;
+        private readonly IDeviceFactory _deviceFactory = deviceFactory;
         public async Task<List<Room>> GetRooms()
         {
             string query = "SELECT * FROM vw_Rooms";
             DataTable resultTable = await _context.ExecuteReader(query);
-            List<Room> result = Utils.Utils.GetRoomList(resultTable);
-            return result;
+            return resultTable.ToRoomList(_deviceFactory);
         }
         public async Task<Room?> GetRoom(Guid roomId)
         {
@@ -31,8 +30,7 @@ namespace SmartHome.Data.Repositories
             DataTable resultTable = await _context.ExecuteReader(query, _id);
             if (resultTable.Rows.Count == 0)
                 return null;
-            Room? room = Utils.Utils.GetRoomList(resultTable).FirstOrDefault();
-            return room;
+            return resultTable.ToRoomList(_deviceFactory).First();
         }
         public async Task AddRoom(Room room)
         {

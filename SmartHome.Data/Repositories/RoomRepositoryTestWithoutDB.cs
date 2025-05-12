@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SmartHome.Data.Context;
-using SmartHome.Data.Interfaces;
-using SmartHome.Data.Models;
 
 namespace SmartHome.Data.Repositories
 {

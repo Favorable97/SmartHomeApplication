@@ -1,6 +1,9 @@
 ﻿using SmartHome.Data.Context;
 using SmartHome.Data.Repositories;
 using Microsoft.Data.SqlClient;
+using SmartHome.Data.Interfaces;
+using SmartHome.Data.Services;
+
 namespace SmartHome.Application
 {
     public static class ServiceProviderExtensions
@@ -18,6 +21,7 @@ namespace SmartHome.Application
             {
                 services.AddSingleton<IRoomRepository, RoomRepositoryTestWithoutDB>();
             }
+            services.AddSingleton<IDeviceFactory, DeviceFactory>();
         }
         public static void AddSqlService(this IServiceCollection services, string connectionString)
         {

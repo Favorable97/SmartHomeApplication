@@ -1,4 +1,5 @@
-﻿using SmartHome.Data.Interfaces;
+﻿using SmartHome.Data.Enumerables;
+using SmartHome.Data.Interfaces;
 using SmartHome.Data.Repositories;
 
 namespace SmartHome.Application.Services
@@ -44,7 +45,7 @@ namespace SmartHome.Application.Services
             await _repository.RemoveRoom(roomId);
             return ApiResponse<object>.Ok(null, "Комната удалена!");
         }
-        public Task AddDeviceToRoom(Guid roomId, IDevice device)
+        public Task AddDeviceToRoom(AddDeviceToRoomDTO userData)
         {
             throw new NotImplementedException();
         }

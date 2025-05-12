@@ -8,7 +8,7 @@ namespace SmartHome.Application.Services
         public Task<ApiResponse<Room>> GetRoom(Guid roomId);
         public Task<ApiResponse<Room>> AddRoom(Room room);
         public Task<ApiResponse<Room>> UpdateRoom(Room room);
-        public Task AddDeviceToRoom(Guid roomId, IDevice device);
+        public Task AddDeviceToRoom(AddDeviceToRoomDTO userData);
         public Task RemoveDeviceFromRoomById(Room room, int deviceId);
         public Task<ApiResponse<object>> RemoveRoom(Guid roomId);
     }
