@@ -1,12 +1,14 @@
 ﻿using SmartHome.Data.Enumerables;
 using SmartHome.Data.Interfaces;
+using SmartHome.Data.Models;
 using SmartHome.Data.Repositories;
 
 namespace SmartHome.Application.Services
 {
-    public class RoomServices(IRoomRepository repository) : IRoomServices
+    public class RoomServices(IRoomRepository repository, IDeviceFactory deviceFactory) : IRoomServices
     {
         private IRoomRepository _repository = repository;
+        private IDeviceFactory _deviceFactory = deviceFactory;
         public async Task<ApiResponse<List<Room>>> GetRooms()
         {
             var rooms = await _repository.GetRooms();
@@ -45,9 +47,20 @@ namespace SmartHome.Application.Services
             await _repository.RemoveRoom(roomId);
             return ApiResponse<object>.Ok(null, "Комната удалена!");
         }
-        public Task AddDeviceToRoom(AddDeviceToRoomDTO userData)
+        public async Task<ApiResponse<IDevice>> AddDeviceToRoom(AddDeviceToRoomDTO userData)
         {
-            throw new NotImplementedException();
+            Room room = await _repository.GetRoom(userData.RoomId);
+            if (room is null)
+                return ApiResponse<IDevice>.Error($"Комнаты с ID = {userData.RoomId} не существует!");
+            IDevice device = deviceFactory.CreateDevice(
+                Guid.NewGuid(), 
+                userData.DeviceType, 
+                userData.DeviceName, 
+                userData.WorkTemperature ?? 0
+            );
+            await _repository.AddDeviceToRoom(userData.RoomId, device);
+
+            return ApiResponse<IDevice>.Ok(device, $"Устройство {userData.DeviceName} успешно добавлено в комнату ");
         }
         public Task RemoveDeviceFromRoomById(Room room, int deviceId)
         {

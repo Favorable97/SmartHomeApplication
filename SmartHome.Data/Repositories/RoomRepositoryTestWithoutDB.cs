@@ -14,12 +14,12 @@ namespace SmartHome.Data.Repositories
             new Room() { Name = "Маля комната", Devices = [], Temperature = 23},
             new Room() { Name = "Спальня", Devices = [], Temperature = 23},
         ];*/
-        List<Room> _rooms;
-        List<IDevice> _devices;
+        private List<Room> _rooms;
+        private List<IDevice> _devices;
         public RoomRepositoryTestWithoutDB() 
         {
-            _rooms = new List<Room>();
-            _devices = new List<IDevice>();
+            _rooms = [];
+            _devices = [];
         }
         public Task<List<Room>> GetRooms()
         {
@@ -38,25 +38,18 @@ namespace SmartHome.Data.Repositories
         public async Task UpdateRoom(Room room)
         {
             Room? updateRoom = await GetRoom(room.ID);
-            if (updateRoom is not null)
-                updateRoom.Name = room.Name;
+            updateRoom.Name = room.Name;
         }
         public async Task RemoveRoom(Guid roomId)
         {
-            Room? removeRoom = await GetRoom(roomId);
-            if (removeRoom is not null)
-            {
-                _rooms.Remove(removeRoom);
-            }
+            Room? removeRoom = await GetRoom(roomId)!;
+            _rooms.Remove(removeRoom!);
         }
         public async Task AddDeviceToRoom(Guid roomId, IDevice device)
         {
             Room? room = await GetRoom(roomId);
-            if (room is not null)
-            {
-                room.Devices.Add(device);
-
-            }
+            room!.Devices.Add(device);
+            _devices.Add(device);
         }
         public async Task RemoveDeviceFromRoomById(Room room, int deviceId)
         {
