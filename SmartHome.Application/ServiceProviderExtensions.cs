@@ -1,9 +1,8 @@
 ﻿using SmartHome.Data.Context;
 using SmartHome.Data.Repositories;
 using Microsoft.Data.SqlClient;
-using SmartHome.Data.Interfaces;
-using SmartHome.Data.Services;
-
+using SmartHome.Application.Interfaces;
+using SmartHome.Application.Services;
 namespace SmartHome.Application
 {
     public static class ServiceProviderExtensions
@@ -12,6 +11,7 @@ namespace SmartHome.Application
         {
             //services.AddSingleton<SmartHomeDBContext>(new SmartHomeDBContext(connectionString));
             services.AddScoped<IRoomServices, RoomServices>();
+            services.AddScoped<IDeviceRepository, DeviceRepository>();
             // В случае, если сервис запущен не на моей машине, то разработка ведется через List
             if (Environment.MachineName.Equals("DESKTOP-F6VA77D"))
             {
@@ -21,7 +21,6 @@ namespace SmartHome.Application
             {
                 services.AddSingleton<IRoomRepository, RoomRepositoryTestWithoutDB>();
             }
-            services.AddSingleton<IDeviceFactory, DeviceFactory>();
         }
         public static void AddSqlService(this IServiceCollection services, string connectionString)
         {

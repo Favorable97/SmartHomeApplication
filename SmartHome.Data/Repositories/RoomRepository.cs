@@ -39,7 +39,7 @@ namespace SmartHome.Data.Repositories
             [
                 new("@ID", room.ID),
                 new("@Name", room.Name),
-                new("@Temperature", room.Temperature)
+                // new("@Temperature", room.Temperature)
             ];
             await _context.ExecuteAsync(query, parameters);
         }
@@ -53,13 +53,35 @@ namespace SmartHome.Data.Repositories
             ];
             await _context.ExecuteAsync(query, parameters);
         }
-        public Task AddDeviceToRoom(Guid roomId, IDevice device)
+        public async Task AddDeviceToRoom(Guid roomId, IDevice device)
         {
-            throw new NotImplementedException();
+            string sql = "INSERT INTO Device VALUES (@DeviceID, @RoomID, @Name, @Type";
+            
+            SqlParameter[] parameters =
+            [
+                new SqlParameter("@DeviceID", device.ID),
+                new SqlParameter("@RoomID", roomId),
+                new SqlParameter("@Name", device.Name),
+                new SqlParameter("@WorkTemperature", DBNull.Value)
+            ];
+            if (device.Type == DevicesType.Conditioner)
+            {
+                sql += ", @WorkTemperature";
+                Conditioner conditioner = (Conditioner)device;
+                parameters[parameters.Length - 1].Value = conditioner.WorkTemperature;
+            }
+            sql += ")";
+            await _context.ExecuteAsync(sql, parameters);
         }
-        public Task RemoveDeviceFromRoomById(Room room, int deviceId)
+        public async Task RemoveDeviceFromRoomById(Guid deviceId)
         {
-            throw new NotImplementedException();
+            string sql = "DELETE FROM Device WHERE ID = @DeviceID";
+            SqlParameter parameter = new()
+            {
+                ParameterName = "@DeviceID",
+                Value = deviceId
+            };
+            await _context.ExecuteAsync(sql, parameter);
         }
         public async Task RemoveRoom(Guid roomId)
         {

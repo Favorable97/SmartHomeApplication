@@ -17,7 +17,7 @@ namespace SmartHome.Data.Services
             {
                 Guid roomId = row.Field<Guid>("RoomID");
                 string roomName = row.Field<string>("RoomName")!;
-                double temperature = row.Field<Double>("RoomTemperature");
+                //double temperature = row.Field<Double>("RoomTemperature");
 
                 if (roomDict.TryGetValue(roomId, out Room? room))
                 {
@@ -25,7 +25,7 @@ namespace SmartHome.Data.Services
                     {
                         ID = roomId,
                         Name = roomName,
-                        Temperature = temperature,
+                        //Temperature = temperature,
                         Devices = []
                     };
                     roomDict[roomId] = room;
@@ -41,6 +41,18 @@ namespace SmartHome.Data.Services
                 }
             }
             return [.. roomDict.Values];
+        }
+
+        public static List<IDevice> ToDeviceList(this DataTable table, IDeviceFactory deviceFactory)
+        {
+            List<IDevice> devices = [];
+            foreach (DataRow row in table.Rows)
+            {
+                IDevice device = deviceFactory.CreateDevice(row);
+                if (device is not null)
+                    devices.Add(device);
+            }
+            return devices;
         }
     }
 }

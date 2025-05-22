@@ -1,6 +1,6 @@
 ﻿using SmartHome.Data.Models;
 using SmartHome.Data.Interfaces;
-namespace SmartHome.Application.Services
+namespace SmartHome.Application.Interfaces
 {
     public interface IRoomServices
     {
@@ -9,7 +9,7 @@ namespace SmartHome.Application.Services
         public Task<ApiResponse<Room>> AddRoom(Room room);
         public Task<ApiResponse<Room>> UpdateRoom(Room room);
         public Task<ApiResponse<IDevice>> AddDeviceToRoom(AddDeviceToRoomDTO userData);
-        public Task RemoveDeviceFromRoomById(Room room, int deviceId);
+        public Task<ApiResponse<object>> RemoveDeviceFromRoomById(DeleteDeviceFromRoomDTO userData);
         public Task<ApiResponse<object>> RemoveRoom(Guid roomId);
     }
 }

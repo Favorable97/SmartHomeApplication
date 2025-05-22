@@ -1,14 +1,13 @@
 ﻿using SmartHome.Data.Enumerables;
-using SmartHome.Data.Interfaces;
 using SmartHome.Data.Models;
-using SmartHome.Data.Repositories;
 
 namespace SmartHome.Application.Services
 {
-    public class RoomServices(IRoomRepository repository, IDeviceFactory deviceFactory) : IRoomServices
+    public class RoomServices(IRoomRepository repository, IDeviceFactory deviceFactory, IDeviceRepository deviceRepository) : IRoomServices
     {
         private IRoomRepository _repository = repository;
         private IDeviceFactory _deviceFactory = deviceFactory;
+        private IDeviceRepository _deviceRepository = deviceRepository;
         public async Task<ApiResponse<List<Room>>> GetRooms()
         {
             var rooms = await _repository.GetRooms();
@@ -52,7 +51,7 @@ namespace SmartHome.Application.Services
             Room room = await _repository.GetRoom(userData.RoomId);
             if (room is null)
                 return ApiResponse<IDevice>.Error($"Комнаты с ID = {userData.RoomId} не существует!");
-            IDevice device = deviceFactory.CreateDevice(
+            IDevice device = _deviceFactory.CreateDevice(
                 Guid.NewGuid(), 
                 userData.DeviceType, 
                 userData.DeviceName, 
@@ -62,9 +61,15 @@ namespace SmartHome.Application.Services
 
             return ApiResponse<IDevice>.Ok(device, $"Устройство {userData.DeviceName} успешно добавлено в комнату ");
         }
-        public Task RemoveDeviceFromRoomById(Room room, int deviceId)
+        public async Task<ApiResponse<object>> RemoveDeviceFromRoomById(DeleteDeviceFromRoomDTO userData)
         {
-            throw new NotImplementedException();
+            Room? room = await _repository.GetRoom(userData.RoomID);
+            
+            IDevice? device = await _deviceRepository.GetDeviceById(userData.DeviceID);
+            if (room is null || device is null)
+                return ApiResponse<object>.Error("Некорректные данные при попытке удалить устройство из комнаты! Попробуйте обновить страницу");
+            //_repository.
+            return ApiResponse<object>.Ok(null, "");
         }
     }
 }

@@ -1,6 +1,5 @@
 using SmartHome.Application;
 using SmartHome.Application.Middleware;
-using SmartHome.Data.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddStartServices();

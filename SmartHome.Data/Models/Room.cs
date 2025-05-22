@@ -5,6 +5,6 @@
         public Guid ID { get; init; } = Guid.NewGuid();
         public string Name { get; set; }
         public List<IDevice> Devices { get; set; } = [];
-        public double Temperature { get; set; } = 21;
+        //public double Temperature { get; set; } = 21;
     }
 }
