@@ -32,8 +32,8 @@ app.MapDelete("/api/room/{roomId}", async (IRoomServices service, Guid roomId) =
 });
 app.MapPost("/api/device", async (IRoomServices service, AddDeviceToRoomDTO userData) =>
 {
-    await service.AddDeviceToRoom(userData);
-    return Results.Created();
+    var result = await service.AddDeviceToRoom(userData);
+    return Results.Created($"/api/device/{result.Data.ID}", result);
 });
 app.MapDelete("/api/device/{deviceId}", async (IRoomServices service, Guid deviceId) =>
 {

@@ -55,22 +55,21 @@ namespace SmartHome.Data.Repositories
         }
         public async Task AddDeviceToRoom(Guid roomId, IDevice device)
         {
-            string sql = "INSERT INTO Device VALUES (@DeviceID, @RoomID, @Name, @Type";
+            string sql = "INSERT INTO Device VALUES (@DeviceID, @RoomID, @Name, @Type, @WorkTemperature)";
             
             SqlParameter[] parameters =
             [
                 new SqlParameter("@DeviceID", device.ID),
                 new SqlParameter("@RoomID", roomId),
                 new SqlParameter("@Name", device.Name),
+                new SqlParameter("@Type", device.Type),
                 new SqlParameter("@WorkTemperature", DBNull.Value)
             ];
             if (device.Type == DevicesType.Conditioner)
             {
-                sql += ", @WorkTemperature";
                 Conditioner conditioner = (Conditioner)device;
                 parameters[parameters.Length - 1].Value = conditioner.WorkTemperature;
             }
-            sql += ")";
             await _context.ExecuteAsync(sql, parameters);
         }
         public async Task RemoveDeviceFromRoomById(Guid deviceId)

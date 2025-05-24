@@ -19,7 +19,7 @@ namespace SmartHome.Data.Services
                 string roomName = row.Field<string>("RoomName")!;
                 //double temperature = row.Field<Double>("RoomTemperature");
 
-                if (roomDict.TryGetValue(roomId, out Room? room))
+                if (!roomDict.TryGetValue(roomId, out Room? room))
                 {
                     room = new()
                     {

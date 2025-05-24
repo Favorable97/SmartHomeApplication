@@ -8,7 +8,7 @@ namespace SmartHome.Data.Context
         private readonly SqlConnection _connection = connection;
         public async Task<int> ExecuteAsync(string query, params SqlParameter[] parameters)
         {
-            await _connection.OpenAsync();
+            await OpenConnection();
             using SqlCommand command = new(query, connection);
             if (parameters != null)
             {
@@ -19,7 +19,7 @@ namespace SmartHome.Data.Context
         }
         public async Task<object?> ExecuteScalarAsync(string query, params SqlParameter[] parameters)
         {
-            await _connection.OpenAsync();
+            await OpenConnection();
             using SqlCommand command = new(query, connection);
             if (parameters != null)
             {
@@ -31,7 +31,7 @@ namespace SmartHome.Data.Context
         }
         public async Task<DataTable> ExecuteReader(string query, params SqlParameter[] parameters)
         {
-            await _connection.OpenAsync();
+            await OpenConnection();
             using SqlDataAdapter adapter = new(query, connection);
             if (parameters.Length > 0)
             {
@@ -42,6 +42,12 @@ namespace SmartHome.Data.Context
             DataTable result = new();
             adapter.Fill(result);
             return result;
+        }
+
+        private async Task OpenConnection()
+        {
+            if (_connection.State != ConnectionState.Open)
+                await _connection.OpenAsync();
         }
     }
 }
