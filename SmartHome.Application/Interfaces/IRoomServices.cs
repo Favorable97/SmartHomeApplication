@@ -9,7 +9,7 @@ namespace SmartHome.Application.Interfaces
         public Task<ApiResponse<Room>> AddRoom(Room room);
         public Task<ApiResponse<Room>> UpdateRoom(Room room);
         public Task<ApiResponse<IDevice>> AddDeviceToRoom(AddDeviceToRoomDTO userData);
-        public Task<ApiResponse<object>> RemoveDeviceFromRoomById(DeleteDeviceFromRoomDTO userData);
+        public Task<ApiResponse<object>> RemoveDeviceFromRoomById(Guid userData);
         public Task<ApiResponse<object>> RemoveRoom(Guid roomId);
     }
 }

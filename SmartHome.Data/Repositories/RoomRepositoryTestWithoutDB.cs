@@ -51,7 +51,7 @@ namespace SmartHome.Data.Repositories
             room!.Devices.Add(device);
             _devices.Add(device);
         }
-        public async Task RemoveDeviceFromRoomById(Room room, int deviceId)
+        public async Task RemoveDeviceFromRoomById(Guid deviceId)
         {
             
         }

@@ -34,7 +34,7 @@ namespace SmartHome.Data.Repositories
         }
         public async Task AddRoom(Room room)
         {
-            string query = "INSERT INTO Room VALUES(@ID, @Name, @Temperature)";
+            string query = "INSERT INTO Room VALUES(@ID, @Name)";
             SqlParameter[] parameters =
             [
                 new("@ID", room.ID),

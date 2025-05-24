@@ -61,15 +61,13 @@ namespace SmartHome.Application.Services
 
             return ApiResponse<IDevice>.Ok(device, $"Устройство {userData.DeviceName} успешно добавлено в комнату ");
         }
-        public async Task<ApiResponse<object>> RemoveDeviceFromRoomById(DeleteDeviceFromRoomDTO userData)
+        public async Task<ApiResponse<object>> RemoveDeviceFromRoomById(Guid deviceId)
         {
-            Room? room = await _repository.GetRoom(userData.RoomID);
-            
-            IDevice? device = await _deviceRepository.GetDeviceById(userData.DeviceID);
-            if (room is null || device is null)
+            IDevice? device = await _deviceRepository.GetDeviceById(deviceId);
+            if (device is null)
                 return ApiResponse<object>.Error("Некорректные данные при попытке удалить устройство из комнаты! Попробуйте обновить страницу");
-            //_repository.
-            return ApiResponse<object>.Ok(null, "");
+            await _repository.RemoveDeviceFromRoomById(device.ID);
+            return ApiResponse<object>.Ok(null, $"Оборудование {device.Name}");
         }
     }
 }
